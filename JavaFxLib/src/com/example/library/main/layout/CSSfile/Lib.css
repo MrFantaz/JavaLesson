@@ -1,0 +1,11 @@
+#WorkPane{
+    -fx-background-color: antiquewhite;
+}
+.root{
+    -fx-background-color: bisque;
+    -fx-background-size: 20px;
+}
+.button{
+    -fx-font-size: 30px;
+
+}

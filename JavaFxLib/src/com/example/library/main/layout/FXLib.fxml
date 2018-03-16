@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="529.0" prefWidth="851.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.library.main.Controller">
+   <children>
+      <SplitPane dividerPositions="0.5008264462809917" layoutX="-6.0" layoutY="-3.0" prefHeight="412.0" prefWidth="607.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ScrollPane layoutX="29.0" layoutY="63.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="400.0" prefWidth="300.0">
+                           <children>
+                              <TableView fx:id="TableView" layoutX="2.0" layoutY="1.0" prefHeight="529.0" prefWidth="422.0" AnchorPane.bottomAnchor="-129.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-122.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="TableTitle" prefWidth="165.0" text="Title" />
+                                  <TableColumn fx:id="TableAuthor" prefWidth="96.0" text="Author" />
+                                    <TableColumn fx:id="TableYear" prefWidth="160.0" text="Year" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane id="WorkPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" stylesheets="@CSSfile/Lib.css">
+               <children>
+                  <Label layoutX="52.0" layoutY="53.0" text="Title" />
+                  <Button fx:id="newButton" layoutX="54.0" layoutY="462.0" mnemonicParsing="false" onAction="#onActionButton" text="New" />
+                  <Label layoutX="52.0" layoutY="112.0" text="Author" />
+                  <Button layoutX="322.0" layoutY="462.0" mnemonicParsing="false" onAction="#onActionButtonSave" text="Save" />
+                  <DatePicker fx:id="datePicker" layoutX="189.0" layoutY="174.0" />
+                  <Label layoutX="52.0" layoutY="178.0" text="Year" />
+                  <TextArea fx:id="Disc" layoutX="176.0" layoutY="215.0" prefHeight="98.0" prefWidth="200.0" text="Description&#10;" />
+                  <TextField fx:id="TextTitle" layoutX="189.0" layoutY="58.0" />
+                  <ComboBox fx:id="Author" layoutX="189.0" layoutY="108.0" prefWidth="150.0" />
+                  <Button fx:id="AddAuthorAuthor" layoutX="160.0" layoutY="462.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="24.0" text="New Author" />
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
