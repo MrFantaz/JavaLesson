@@ -45,4 +45,32 @@ public class Author {
     public long getId() {
         return id;
     }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public LocalDate getBirthDay() {
+        return birthDay;
+    }
+
+    public LocalDate getDateGone() {
+        return dateGone;
+    }
+
+    public static long getIdCounter() {
+        return idCounter;
+    }
 }

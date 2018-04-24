@@ -1,5 +1,6 @@
 package com.example.library.main;
 
+import com.example.library.main.database.DatabaseConnection;
 import com.example.library.main.modul.Author;
 import com.example.library.main.modul.Book;
 import javafx.application.Application;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 import java.time.LocalDate;
 
 
-public class Main extends Application implements Controller.AddAuthorListener{
+public class Main extends Application implements Controller.AddAuthorListener,Controller.AddBookListener{
     private ObservableList<Book> books = FXCollections.observableArrayList();
     private ObservableList<Author> authors = FXCollections.observableArrayList();
     //TODO connect MySql , create user and pass,URL(localhost:3306), download driver Connecrion/J
@@ -35,20 +36,32 @@ public class Main extends Application implements Controller.AddAuthorListener{
         primaryStage.setTitle("LibraryFX");
         controller.setBook(books);
         controller.setAuthor(authors);
+        controller.setAddAuthorListener(this);
+        controller.setAddBookListener(this);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
     public Main(){
-
+        System.out.println("Main Start");
+        DatabaseConnection connection = DatabaseConnection.getInstance();
+        books.addAll(connection.getBooksList());
+        authors.addAll(connection.getAuthorsList());
     }
     public static void main(String[] args) {
         System.out.println("psvm");
         launch(args);
     }
 
+
+
     @Override
-    public void addAuthor(Book book) {
-    new CreateAuthorDialog();
+    public void showAuthorDialog() {
+        new CreateAuthorDialog();
+    }
+
+    @Override
+    public void addBook(Book book) {
+        books.add(book);
     }
 }

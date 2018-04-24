@@ -3,25 +3,24 @@ package com.example.library.main.database;
 import com.example.library.main.log.TinyLog;
 import com.example.library.main.modul.Author;
 import com.example.library.main.modul.Book;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseConnection {
-    private final String USER="root";
-    private final String PASS="admin";
-    private final String DRIVER_CLASS="com.mysql.jdbc.Driver";
-    private final String NAME_DATABASE="library";
+    private final String USER = "root";
+    private final String PASS = "admin";
+    private final String DRIVER_CLASS = "com.mysql.jdbc.Driver";
+    private final String NAME_DATABASE = "newlibrary";
     public static final String URL = "jdbc:mysql://localhost:3306";
-    private String path ;
+    private String path;
     private Statement statement;
     private DatabaseImportExport databaseImportExport;
     private static DatabaseConnection instance = null;
-    private ObservableList<Author> authorObservableList = FXCollections.observableArrayList();
-    private List<Book> bookList = new ArrayList<>();
+    private List<Book> booksList;
+    private  List<Author> authorsList;
+
     private DatabaseConnection() {
         try {
             Class.forName(DRIVER_CLASS);
@@ -35,13 +34,14 @@ public class DatabaseConnection {
             TinyLog.trace("Path : " + path);
             ResultSet resultSet = statement.executeQuery("show tables;");
             while (resultSet.next()) {
-                System.out.println(resultSet.getString("Tables_in_library"));
+                System.out.println(resultSet.getString("Tables_in_newlibrary"));
             }
         } catch (ClassNotFoundException e) {
             TinyLog.warn("ClassNotFound: " + e.getMessage());
         } catch (SQLException e) {
             TinyLog.warn("Sql error: " + e.getMessage());
         }
+       loadData();
 
     }
 
@@ -90,54 +90,82 @@ public class DatabaseConnection {
         this.path = path;
     }
 
-    public ObservableList<Author> returnAuthor(){
-        String sql ="";
-
-        try {
-           ResultSet resultSet = statement.executeQuery(sql);
-            long id =resultSet.getLong("id");
-            String firstName = resultSet.getString("firstname");
-            String middleName = resultSet.getString("middlename");
-            String lastName = resultSet.getString("lastName");
-            String alias = resultSet.getString("alias");
-            Date dateBith = resultSet.getDate("dateBith");
-            Date goneDate = resultSet.getDate("goneDate");
-            authorObservableList.add(new Author(id,firstName,middleName,lastName,alias,dateBith.toLocalDate(),goneDate.toLocalDate()));
-        } catch (SQLException e) {
-            TinyLog.trace("Author not create: "+e.getMessage());
-        }
-
-        return null;
-    }
-
-    public void returnBooks() {
-        String sql = "";
+    public void loadAuthor() {
+        String sql = "select authors.id, firstnames.firstName, " +
+                "middlenames.middleName,lastnames.lastName, " +
+                "authors.dateBirth,authors.goneDate, " +
+                "authors.alias,authors.genre " +
+                " from authors join firstnames " +
+                " on authors.firstName = firstnames.id " +
+                " join middlenames " +
+                "on authors.middleName = middlenames.id " +
+                " join lastnames " +
+                "on authors.lastName = lastnames.id;";
+        authorsList = new ArrayList<>();
         try {
             ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String firstName = resultSet.getString("firstname");
+                String middleName = resultSet.getString("middlename");
+                String lastName = resultSet.getString("lastName");
+                String alias = resultSet.getString("alias");
+                Date dateBith = resultSet.getDate("dateBirth");
+                Date goneDate = resultSet.getDate("goneDate");
+                authorsList.add(new Author(id, firstName, middleName, lastName, alias, dateBith.toLocalDate(), goneDate.toLocalDate()));
+            }
+        } catch (SQLException e) {
+            TinyLog.trace("Author not create: " + e.getMessage());
+        }
 
-            long id = resultSet.getLong("id");
-            String title = resultSet.getString("title");
-            String isbn = resultSet.getString("isbn");
-            String description = resultSet.getString("description");
-            Date realeaseDate = resultSet.getDate("realeaseDate");
-            String coverLink = resultSet.getString("coverLink");
-            int volume = resultSet.getInt("volume");
-            long authorId = resultSet.getLong("authorId");
-            Author author = getAuthorById(authorId);
-            bookList.add(new Book(title, author, realeaseDate.toLocalDate(), isbn, coverLink, description, id));
+
+    }
+
+    public void loadBooks() {
+        String sql = "select books.id, books.title, " +
+                " books.description, books.realease_date, " +
+                " books.coverLink, books.volume, books.isbn," +
+                " books.authorId from books;";
+        booksList = new ArrayList<>();
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+                String title = resultSet.getString("title");
+                String isbn = resultSet.getString("isbn");
+                String description = resultSet.getString("description");
+                Date realeaseDate = resultSet.getDate("realease_Date");
+                String coverLink = resultSet.getString("coverLink");
+                int volume = resultSet.getInt("volume");
+                long authorId = resultSet.getLong("authorId");
+                Author author = getAuthorById(authorId);
+                booksList.add(new Book(title, author, realeaseDate.toLocalDate(), isbn, coverLink, description,volume, id));
+            }
         } catch (SQLException e) {
             TinyLog.trace("Books nor create:" + e.getMessage());
         }
+
     }
 
 
-
-    public Author getAuthorById(long id){
-        for (Author author:authorObservableList) {
+    public Author getAuthorById(long id) {
+        for (Author author : authorsList) {
             if (author.getId() == id) {
                 return author;
             }
         }
         return null;
     }
+    private void loadData(){
+        loadAuthor();
+        loadBooks();
+    }
+    public List<Author> getAuthorsList() {
+        return authorsList;
+    }
+
+    public List<Book> getBooksList() {
+        return booksList;
+    }
+
 }

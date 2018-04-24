@@ -25,7 +25,7 @@ public class Controller implements Initializable {
     @FXML
     private javafx.scene.control.TableView<Book> TableView;
     @FXML
-    private ComboBox Author;
+    private ComboBox<Author> Author;
     @FXML
     private TextField TextTitle;
     @FXML
@@ -34,6 +34,8 @@ public class Controller implements Initializable {
     private TextArea Disc;
 
 
+    private AddAuthorListener addAuthorListener;
+    private AddBookListener addBookListener;
 
     private ObservableList<Book> book;
     private  ObservableList<com.example.library.main.modul.Author> authors;
@@ -53,10 +55,10 @@ public class Controller implements Initializable {
     public void onActionButtonSave(){
         String title = TextTitle
                 .getText();
-        Author authorText =(Author) Author.getSelectionModel().getSelectedItem();
+        Author authorText =Author.getSelectionModel().getSelectedItem();
         LocalDate time = datePicker.getValue();
         Book book = new Book(title,authorText,time);
-
+         this.book.add(book);
         System.out.println("Save done");
     }
     public void setAuthor(ObservableList<Author> author){
@@ -67,21 +69,30 @@ public class Controller implements Initializable {
     public void setBook(ObservableList<Book> book) {
         System.out.println("das");
         this.book = book;
-        TableView.setItems(book);
         TableTitle.setCellValueFactory(new PropertyValueFactory<Book,String>("title"));
         TableAuthor.setCellValueFactory(new PropertyValueFactory<Book,String>("author"));
         TableYear.setCellValueFactory(new PropertyValueFactory<Book,LocalDate>("releaseDate"));
         TextTitle.setText("Title");
-    }
-    public  void AddAuthorAuthor(){
-
+        TableView.setItems(book);
     }
 
+    public void setAddBookListener(AddBookListener addBookListener) {
+        this.addBookListener = addBookListener;
+    }
+
+    public void setAddAuthorListener(AddAuthorListener addAuthorListener) {
+        this.addAuthorListener = addAuthorListener;
+    }
 
 
 
 
-   public interface AddAuthorListener{
-        public void addAuthor(Book book);
-   }
+        public interface AddAuthorListener {
+        void showAuthorDialog();
+    }
+
+    public interface AddBookListener {
+        void addBook(Book book);
+    }
+
 }
