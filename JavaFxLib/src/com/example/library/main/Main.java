@@ -9,22 +9,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import sun.util.resources.LocaleData;
-
 import java.time.LocalDate;
 
 
 public class Main extends Application implements Controller.AddAuthorListener{
     private ObservableList<Book> books = FXCollections.observableArrayList();
     private ObservableList<Author> authors = FXCollections.observableArrayList();
+    //TODO connect MySql , create user and pass,URL(localhost:3306), download driver Connecrion/J
+    //TODO gitlab download ,import;
+
     {
         authors.add(new Author("Pushin"));
         authors.add(new Author("Dante"));
     }
     {
-        books.add(new Book("Hell","Dante", LocalDate.now()));
-        books.add(new Book("War and Pis","Pushkin",LocalDate.now()));
-        books.add(new Book("Revisor","Pushkin",LocalDate.now()));
+
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -40,7 +39,9 @@ public class Main extends Application implements Controller.AddAuthorListener{
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    public Main(){
 
+    }
     public static void main(String[] args) {
         System.out.println("psvm");
         launch(args);

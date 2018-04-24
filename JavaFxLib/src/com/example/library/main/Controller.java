@@ -53,7 +53,7 @@ public class Controller implements Initializable {
     public void onActionButtonSave(){
         String title = TextTitle
                 .getText();
-        String authorText = Author.getSelectionModel().getSelectedItem().toString();
+        Author authorText =(Author) Author.getSelectionModel().getSelectedItem();
         LocalDate time = datePicker.getValue();
         Book book = new Book(title,authorText,time);
 
